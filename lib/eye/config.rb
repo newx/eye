@@ -32,9 +32,8 @@ class Eye::Config
 
     # Check dublicates of the full pid_file
 
-    dubl_pids = all_processes.each_with_object(Hash.new(0)) do |o, h| 
-      ex_pid_file = Eye::System.normalized_file(o[:pid_file], o[:working_dir])
-      h[ex_pid_file] += 1
+    dubl_pids = all_processes.each_with_object(Hash.new(0)) do |o, h|
+      h[o[:pid_file]] += 1
     end
     dubl_pids = dubl_pids.select{|k,v| v>1}
 

@@ -24,8 +24,7 @@ end
 def p_check(p, name, pid_file)
   p.name.should == name
   p.class.should == Eye::Process
-  p[:pid_file].should == "#{pid_file}"
-  p[:pid_file_ex].should == "/tmp/#{pid_file}"
+  p[:pid_file].should == "/tmp/#{pid_file}"
 end
 
 describe "Eye::Controller" do

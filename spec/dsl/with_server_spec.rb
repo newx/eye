@@ -17,7 +17,7 @@ describe "with_server feature" do
       end
     E
 
-    Eye::Dsl.parse_apps(conf).should == {"bla"=>{:name => "bla", :groups=>{"__default__"=>{:name => "__default__", :application => "bla", :processes=>{"1"=>{:pid_file=>"1.pid", :application=>"bla", :group=>"__default__", :name=>"1"}}}}}}
+    Eye::Dsl.parse_apps(conf).should == {"bla"=>{:name => "bla", :groups=>{"__default__"=>{:name => "__default__", :application => "bla", :processes=>{"1"=>{:pid_file=>"/1.pid", :application=>"bla", :group=>"__default__", :name=>"1", :working_dir=>"/"}}}}}}
   end
 
   it "should another host conditions" do
@@ -35,7 +35,7 @@ describe "with_server feature" do
       end
     E
 
-    Eye::Dsl.parse_apps(conf).should == {"bla"=>{:name => "bla", :groups=>{"__default__"=>{:name => "__default__", :application => "bla", :processes=>{"1"=>{:pid_file=>"1.pid", :application=>"bla", :group=>"__default__", :name=>"1"}}}}}}
+    Eye::Dsl.parse_apps(conf).should == {"bla"=>{:name => "bla", :groups=>{"__default__"=>{:name => "__default__", :application => "bla", :processes=>{"1"=>{:pid_file=>"/1.pid", :application=>"bla", :group=>"__default__", :name=>"1", :working_dir=>"/"}}}}}}
   end
 
   it "should behaves like scoped" do

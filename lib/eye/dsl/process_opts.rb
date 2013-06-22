@@ -15,4 +15,8 @@ class Eye::Dsl::ProcessOpts < Eye::Dsl::Opts
   alias app application
   alias group parent
 
+  def config    
+    Eye::Process.normalize_config(super)
+  end
+
 end

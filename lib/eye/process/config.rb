@@ -20,7 +20,7 @@ module Eye::Process::Config
 
   def prepare_config(new_config)
     h = DEFAULTS.merge(new_config)
-    h[:pid_file_ex] = Eye::System.normalized_file(h[:pid_file], h[:working_dir]) if h[:pid_file]
+    
     h[:checks] = {} if h[:checks].blank?
     h[:triggers] = {} if h[:triggers].blank?
     h[:childs_update_period] = h[:monitor_children][:childs_update_period] if h[:monitor_children] && h[:monitor_children][:childs_update_period]
@@ -31,10 +31,7 @@ module Eye::Process::Config
       h[:triggers][:flapping] = {:type => :flapping, :times => 10, :within => 10.seconds}
     end
     
-    h[:stdout] = Eye::System.normalized_file(h[:stdout], h[:working_dir]) if h[:stdout]
-    h[:stderr] = Eye::System.normalized_file(h[:stderr], h[:working_dir]) if h[:stderr]
-
-    h    
+    self.class.respond_to?(:normalize_config) ? self.class.normalize_config(h) : h
   end
 
   def c(name)

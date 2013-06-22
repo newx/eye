@@ -6,29 +6,29 @@ describe "Eye::Process::System" do
   end
 
   it "load_pid_from_file" do
-    File.open(@process[:pid_file_ex], 'w'){|f| f.write("asdf") }
+    File.open(@process[:pid_file], 'w'){|f| f.write("asdf") }
     @process.load_pid_from_file.should == nil
 
-    File.open(@process[:pid_file_ex], 'w'){|f| f.write(12345) }
+    File.open(@process[:pid_file], 'w'){|f| f.write(12345) }
     @process.load_pid_from_file.should == 12345
 
-    FileUtils.rm(@process[:pid_file_ex]) rescue nil    
+    FileUtils.rm(@process[:pid_file]) rescue nil    
     @process.load_pid_from_file.should == nil
   end
 
   it "failsafe_load_pid" do
-    File.open(@process[:pid_file_ex], 'w'){|f| f.write("asdf") }
+    File.open(@process[:pid_file], 'w'){|f| f.write("asdf") }
     @process.failsafe_load_pid.should == nil
 
-    File.open(@process[:pid_file_ex], 'w'){|f| f.write(12345) }
+    File.open(@process[:pid_file], 'w'){|f| f.write(12345) }
     @process.failsafe_load_pid.should == 12345
 
-    FileUtils.rm(@process[:pid_file_ex]) rescue nil    
+    FileUtils.rm(@process[:pid_file]) rescue nil    
     @process.failsafe_load_pid.should == nil
   end
 
   it "set_pid_from_file" do
-    File.open(@process[:pid_file_ex], 'w'){|f| f.write(12345) }
+    File.open(@process[:pid_file], 'w'){|f| f.write(12345) }
     @process.set_pid_from_file
     @process.pid.should == 12345
     @process.pid = nil
@@ -37,17 +37,17 @@ describe "Eye::Process::System" do
   it "save_pid_to_file" do
     @process.pid = 123456789
     @process.save_pid_to_file
-    File.read(@process[:pid_file_ex]).to_i.should == 123456789
+    File.read(@process[:pid_file]).to_i.should == 123456789
   end
 
   it "failsafe_save_pid ok case" do
     @process.pid = 123456789
     @process.failsafe_save_pid.should == true
-    File.read(@process[:pid_file_ex]).to_i.should == 123456789
+    File.read(@process[:pid_file]).to_i.should == 123456789
   end
 
   it "failsafe_save_pid bad case" do
-    @process.config[:pid_file_ex] = "/asdf/adf/asd/fs/dfs/das/df.1"
+    @process.config[:pid_file] = "/asdf/adf/asd/fs/dfs/das/df.1"
     @process.pid = 123456789
     @process.failsafe_save_pid.should == false    
   end
@@ -55,10 +55,10 @@ describe "Eye::Process::System" do
   it "clear_pid_file" do
     @process.pid = 123456789
     @process.save_pid_to_file
-    File.read(@process[:pid_file_ex]).to_i.should == 123456789
+    File.read(@process[:pid_file]).to_i.should == 123456789
 
     @process.clear_pid_file.should == true
-    File.exists?(@process[:pid_file_ex]).should == false
+    File.exists?(@process[:pid_file]).should == false
   end
 
   it "process_realy_running?" do
@@ -83,7 +83,7 @@ describe "Eye::Process::System" do
   end
 
   it "pid_file_ctime" do
-    File.open(@process[:pid_file_ex], 'w'){|f| f.write("asdf") }
+    File.open(@process[:pid_file], 'w'){|f| f.write("asdf") }
     sleep 1
     (Time.now - @process.pid_file_ctime).should > 1.second
 

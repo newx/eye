@@ -3,8 +3,8 @@ require 'timeout'
 module Eye::Process::System
 
   def load_pid_from_file    
-    if File.exists?(self[:pid_file_ex])
-      _pid = File.read(self[:pid_file_ex]).to_i 
+    if File.exists?(self[:pid_file])
+      _pid = File.read(self[:pid_file]).to_i 
       _pid > 0 ? _pid : nil
     end
   end
@@ -15,7 +15,7 @@ module Eye::Process::System
 
   def save_pid_to_file
     if self.pid
-      File.open(self[:pid_file_ex], 'w') do |f|
+      File.open(self[:pid_file], 'w') do |f|
         f.write self.pid
       end
       true
@@ -25,14 +25,14 @@ module Eye::Process::System
   end
 
   def clear_pid_file
-    File.unlink(self[:pid_file_ex])
+    File.unlink(self[:pid_file])
     true
   rescue 
     nil
   end
 
   def pid_file_ctime
-    File.ctime(self[:pid_file_ex]) rescue Time.now
+    File.ctime(self[:pid_file]) rescue Time.now
   end
 
   def process_realy_running?

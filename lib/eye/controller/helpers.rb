@@ -60,7 +60,7 @@ module Eye::Controller::Helpers
         res3 = {}
 
         group.processes.each do |process|
-          res3[process.name] = process[:pid_file_ex]
+          res3[process.name] = process[:pid_file]
         end
 
         res2[group.name] = res3

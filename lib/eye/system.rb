@@ -56,7 +56,7 @@ module Eye::System
     #   :stdin, :stdout, :stderr
     def daemonize(cmd, cfg = {})
       opts = spawn_options(cfg)
-      pid  = Process::spawn(prepare_env(cfg), *Shellwords.shellwords(cmd), opts)
+      pid  = Process::spawn(cfg[:environment], *Shellwords.shellwords(cmd), opts)
       Process.detach(pid)
       {:pid => pid}
       
@@ -71,7 +71,7 @@ module Eye::System
     #   :stdin, :stdout, :stderr
     def execute(cmd, cfg = {})
       opts = spawn_options(cfg)
-      pid  = Process::spawn(prepare_env(cfg), *Shellwords.shellwords(cmd), opts)
+      pid  = Process::spawn(cfg[:environment], *Shellwords.shellwords(cmd), opts)
 
       timeout = cfg[:timeout] || 1.second
       Timeout.timeout(timeout) do
@@ -131,7 +131,7 @@ module Eye::System
     end
 
     def spawn_options(config = {})
-      o = {pgroup: true, chdir: config[:working_dir] || '/'}
+      o = {pgroup: true, chdir: config[:working_dir]}
       o.update(out: [config[:stdout], 'a']) if config[:stdout]
       o.update(err: [config[:stderr], 'a']) if config[:stderr]
       o.update(in: config[:stdin]) if config[:stdin]
@@ -144,19 +144,6 @@ module Eye::System
       o.update(umask: config[:umask]) if config[:umask]
 
       o
-    end
-
-    def prepare_env(config = {})
-      env = {}
-
-      (config[:environment] || {}).each do |k,v|
-        env[k.to_s] = v.to_s if v
-      end
-
-      # set PWD for unicorn respawn
-      env['PWD'] = config[:working_dir] if config[:working_dir]
-
-      env
     end
   end
 
