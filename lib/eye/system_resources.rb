@@ -43,12 +43,11 @@ class Eye::SystemResources
       @actor ||= PsAxActor.new
     end
 
-  private
-
-    def reset!
-      setup.terminate
+    def clear
       @actor = nil
     end
+
+  private
 
     def ps_aux
       setup

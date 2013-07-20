@@ -64,6 +64,9 @@ RSpec.configure do |config|
 
     stub(Eye::Settings).dir { C.sample_dir }
 
+    silence_warnings { Eye::Control = Eye::Controller.new }
+    Eye::SystemResources.clear
+
     $logger.info "================== #{ self.class.description} '#{ example.description }'========================"
   end
 
@@ -71,10 +74,8 @@ RSpec.configure do |config|
     force_kill_process(@process)
     force_kill_pid(@pid)
 
-    terminate_old_actors
-
-    # actors = Celluloid::Actor.all.map(&:class)
-    # $logger.info "Actors: #{actors.inspect}"
+    Celluloid.shutdown
+    Celluloid.boot
   end
 
   config.after(:all) do
@@ -87,19 +88,6 @@ def clear_pids
     FileUtils.rm(cfg[:pid_file]) rescue nil
   end
   FileUtils.rm(C.just_pid) rescue nil
-end
-
-def terminate_old_actors
-  Celluloid::Actor.all.each do |actor|
-    next unless actor.alive?
-    if [Eye::Controller, Eye::Process, Eye::Group, Eye::ChildProcess].include?(actor.class)
-      next if actor == Eye::Control
-      actor.terminate
-    end
-  end
-
-rescue => ex
-  $logger.error [ex.message, ex.backtrace]
 end
 
 def force_kill_process(process)
