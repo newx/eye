@@ -20,7 +20,15 @@ module Eye
   autoload :Notify,         'eye/notify'
   autoload :Config,         'eye/config'
   autoload :Reason,         'eye/reason'
-
   autoload :Controller,     'eye/controller'
-  autoload :Control,        'eye/control'
+
+  class << self
+    def ctrl
+      (@ctrl ||= Eye::Controller.supervise).actors.first
+    end
+
+    def ctrl_reset
+      @ctrl = nil
+    end
+  end
 end

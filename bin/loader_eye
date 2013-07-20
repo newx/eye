@@ -41,14 +41,14 @@ Eye::Logger.link_logger(options[:logger]) if options[:logger]
 config = options[:config]
 config = File.expand_path(config) if config && !config.empty?
 
-Eye::Control # preload
+Eye::ctrl # preload
 
 if config
   res = server.command('load', config)
   exit if res[:error]
 end
 
-Eye::Control.set_proc_line
+Eye::ctrl.set_proc_line
 
 server.async.run
 

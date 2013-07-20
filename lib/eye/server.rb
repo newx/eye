@@ -34,7 +34,7 @@ class Eye::Server
   end
 
   def command(cmd, *args)
-    Eye::Control.command(cmd, *args)
+    Eye::ctrl.command(cmd, *args)
   end
 
   def unlink_socket_file

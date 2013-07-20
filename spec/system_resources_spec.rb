@@ -28,7 +28,6 @@ describe "Eye::SystemResources" do
   end
 
   it "should cache and update when interval" do
-    Eye::SystemResources.send :reset!
     stub(Eye::System).ps_aux{ {$$ => {:rss => 123}} }
 
     silence_warnings{ Eye::SystemResources::PsAxActor::UPDATE_INTERVAL = 1 }

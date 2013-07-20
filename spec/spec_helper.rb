@@ -15,7 +15,7 @@ if ENV['COVA']
 end
 
 # preload
-Eye::Control
+Eye::ctrl
 Eye::Controller
 Eye::Process
 
@@ -64,7 +64,7 @@ RSpec.configure do |config|
 
     stub(Eye::Settings).dir { C.sample_dir }
 
-    silence_warnings { Eye::Control = Eye::Controller.new }
+    Eye::ctrl_reset
     Eye::SystemResources.clear
 
     $logger.info "================== #{ self.class.description} '#{ example.description }'========================"
