@@ -64,7 +64,7 @@ RSpec.configure do |config|
 
     stub(Eye::Settings).dir { C.sample_dir }
 
-    Eye::ctrl_reset
+    Eye.instance_variable_set(:@ctrl, nil)
     Eye::SystemResources.clear
 
     $logger.info "================== #{ self.class.description} '#{ example.description }'========================"
@@ -93,8 +93,6 @@ end
 def force_kill_process(process)
   if process && process.alive?
     pid = process.pid rescue nil
-    process.terminate rescue nil
-
     force_kill_pid(pid)
   end
 end

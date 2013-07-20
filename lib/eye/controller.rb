@@ -47,14 +47,4 @@ class Eye::Controller
     current_config.settings
   end
 
-  module Singleton
-    def ctrl
-      (@ctrl ||= Eye::Controller.supervise).actors.first
-    end
-
-    def ctrl_reset
-      @ctrl = nil
-    end
-  end
-
 end

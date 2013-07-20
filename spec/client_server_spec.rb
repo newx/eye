@@ -8,10 +8,6 @@ describe "Eye::Client, Eye::Server" do
     @server = Eye::Server.new(@socket_path)
   end
 
-  after :each do
-    @server.terminate
-  end
-
   it "client command, should send to controller" do
     mock(Eye::ctrl).command('restart', 'samples'){ :command_sended }
     mock(Eye::ctrl).command('stop'){ :command_sended2 }
