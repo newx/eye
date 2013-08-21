@@ -25,7 +25,7 @@ module Eye::Process::Commands
       end
 
       self.pid = nil
-      switch :crashed
+      switch :failed_to_start
     end
 
     result
