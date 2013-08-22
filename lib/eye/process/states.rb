@@ -68,7 +68,7 @@ class Eye::Process
     after_transition any-:up => :up, :do => :add_childs
     after_transition any => [:unmonitored, :down], :do => :remove_childs
 
-    after_transition :on => :crashed, :do => :on_crashed
+    after_transition :on => [:crashed, :failed_to_start], :do => :on_crashed
   end
 
   def on_crashed
