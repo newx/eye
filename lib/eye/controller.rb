@@ -42,7 +42,7 @@ class Eye::Controller
     @current_config = Eye::Config.new
 
     Celluloid::logger = Eye::Logger.new('celluloid')
-    Eye::SystemResources.setup
+    Eye::SystemResources.cache
 
     info "starting #{Eye::ABOUT} (#{$$})"
   end

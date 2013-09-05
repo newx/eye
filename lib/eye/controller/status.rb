@@ -16,7 +16,7 @@ module Eye::Controller::Status
 About:  #{Eye::ABOUT}
 Info:   #{resources_str(Eye::SystemResources.resources($$))}
 Ruby:   #{RUBY_DESCRIPTION}
-Gems:   #{%w|Celluloid Celluloid::IO ActiveSupport StateMachine NIO|.map{|c| gem_version(c) }}
+Gems:   #{%w|Celluloid Celluloid::IO ActiveSupport StateMachine NIO Sigar|.map{|c| gem_version(c) }}
 Logger: #{Eye::Logger.dev}
 Socket: #{Eye::Settings::socket_path}
 Pid:    #{Eye::Settings::pid_path}
@@ -102,10 +102,12 @@ private
 
   def resources_str(r)
     return '' if r.blank?
+    memory, cpu, start_time, pid = r[:memory], r[:cpu], r[:start_time], r[:pid]
+    return '' unless memory && cpu && start_time
 
-    res = "#{r[:start_time]}, #{r[:cpu]}%"
-    res += ", #{r[:memory] / 1024}Mb" if r[:memory]
-    res += ", <#{r[:pid]}>"
+    res = "#{Eye::Utils.human_time(start_time)}, #{cpu.to_i}%"
+    res += ", #{memory / 1024 / 1024}Mb"
+    res += ", <#{pid}>"
 
     res
   end
